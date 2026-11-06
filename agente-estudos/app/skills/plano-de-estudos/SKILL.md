@@ -29,7 +29,7 @@ Verifique se a conversa já contém **todas** as informações obrigatórias aba
 1. Use a ferramenta `load_skill_resource` para ler `references/workflow.md`.
 2. Siga **estritamente** os passos do `references/workflow.md`. Ele indica o momento certo de carregar `references/tecnicas.md`, `assets/plano_template.md` e `references/salvar_agenda.md`.
 3. Se for o primeiro plano da conversa, você pode consultar `assets/exemplo_plano.md` para calibrar o nível de detalhe esperado.
-4. Salve a agenda com a ferramenta `WriteFile` no arquivo `plano-de-estudos.csv`, seguindo `references/salvar_agenda.md` (indicado no Passo 5 do workflow).
+4. Salve a agenda com a ferramenta `create_object` no arquivo `plano-de-estudos.csv` no bucket configurado, seguindo `references/salvar_agenda.md` (indicado no Passo 5 do workflow).
 
 ## Regras gerais
 

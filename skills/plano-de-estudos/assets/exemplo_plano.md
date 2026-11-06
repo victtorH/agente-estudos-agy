@@ -76,14 +76,14 @@ Nada. O objetivo cabe no prazo. Se sobrar fôlego depois da entrevista, o próxi
 
 ### 5. Agenda (CSV)
 
-📁 Salvei a agenda em `plano-de-estudos.csv`, com 10 sessões.
+📁 Salvei a agenda em `gs://agente-estudos-planos/plano-de-estudos.csv`, com 10 sessões.
 
 ---
 **Próximos passos:** posso ajustar o plano se sua rotina mudar, se você atrasar alguma sessão ou se quiser mais detalhes em algum módulo.
 
 ---
 
-**Conteúdo gravado com `WriteFile` em `plano-de-estudos.csv`** (não aparece na resposta):
+**Conteúdo gravado com `create_object` em `gs://agente-estudos-planos/plano-de-estudos.csv`** (não aparece na resposta):
 
 ```csv
 Subject,Start Date,Start Time,End Date,End Time,Description

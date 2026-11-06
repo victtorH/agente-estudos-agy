@@ -14,11 +14,13 @@
 
 import contextlib
 import os
+import time
+from collections import defaultdict
 from collections.abc import AsyncIterator
 
 from a2a.server.tasks import InMemoryTaskStore
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
 from google.adk.cli.fast_api import get_fast_api_app
 from google.adk.runners import Runner
 
@@ -68,6 +70,38 @@ app: FastAPI = get_fast_api_app(
 )
 app.title = "agente-estudos"
 app.description = "API for interacting with the Agent agente-estudos"
+
+REQUEST_COUNTS = defaultdict(list)
+MAX_REQUESTS_PER_MINUTE = 30
+
+
+@app.middleware("http")
+async def anti_abuse_middleware(request: Request, call_next):
+    path = request.url.path
+    if (
+        path in ["/healthz", "/docs", "/openapi.json", "/favicon.ico"]
+        or path.startswith("/static")
+        or path.endswith((".js", ".css", ".png", ".svg", ".ico"))
+    ):
+        return await call_next(request)
+
+    client_ip = request.client.host if request.client else "unknown"
+    now = time.time()
+    REQUEST_COUNTS[client_ip] = [t for t in REQUEST_COUNTS[client_ip] if now - t < 60]
+
+    if len(REQUEST_COUNTS[client_ip]) >= MAX_REQUESTS_PER_MINUTE:
+        raise HTTPException(
+            status_code=429,
+            detail="Muitas requisições. Para manter este serviço gratuito e acessível a todos, aguarde 1 minuto.",
+        )
+
+    REQUEST_COUNTS[client_ip].append(now)
+    return await call_next(request)
+
+
+@app.get("/healthz")
+async def healthz():
+    return {"status": "ok"}
 
 
 # Main execution

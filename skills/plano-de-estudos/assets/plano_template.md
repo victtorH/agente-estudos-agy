@@ -50,19 +50,19 @@ Preencha o template abaixo substituindo tudo que estiver entre `[colchetes]`. Ma
 
 ### 5. Agenda (CSV)
 
-📁 Salvei a agenda em `[caminho retornado pelo WriteFile]`, com [N] sessões.
+📁 Salvei a agenda em `gs://[bucket]/plano-de-estudos.csv`, com [N] sessões.
 
 ---
 **Próximos passos:** posso ajustar o plano se sua rotina mudar, se você atrasar alguma sessão ou se quiser mais detalhes em algum módulo.
 ````
 
-> Se a ferramenta `WriteFile` não estiver disponível, troque a linha 📁 da seção 5 por um bloco ```` ```csv ```` com o CSV completo.
+> Se a ferramenta `create_object` não estiver disponível, troque a linha 📁 da seção 5 por um bloco ```` ```csv ```` com o CSV completo.
 
 ---
 
 ## Regras obrigatórias do CSV
 
-O conteúdo gravado com `WriteFile` em `plano-de-estudos.csv` deve ser **só o CSV** (sem a cerca ```` ```csv ````). O Google Agenda só aceita o arquivo se estas regras forem seguidas **exatamente**:
+O conteúdo gravado com `create_object` em `plano-de-estudos.csv` deve ser **só o CSV** (sem a cerca ```` ```csv ````). O Google Agenda só aceita o arquivo se estas regras forem seguidas **exatamente**:
 
 1. **Cabeçalho** idêntico ao do template, em inglês: `Subject,Start Date,Start Time,End Date,End Time,Description`.
 2. **Uma linha por sessão de estudo.** Checkpoints entram como parte da sessão do dia, não como linha separada.

@@ -51,8 +51,8 @@ No último dia de estudo de cada semana, inclua um **checkpoint** com:
 3. Monte o **CSV para o Google Agenda** seguindo exatamente as regras descritas no template:
    * Se o plano tiver **até 14 dias de estudo**, inclua todas as sessões.
    * Se tiver **mais de 14**, inclua só os primeiros 14 dias de estudo e avise: "Quer que eu gere o CSV das próximas semanas?".
-4. Use `load_skill_resource` para ler `references/salvar_agenda.md` e salve o CSV com a ferramenta `WriteFile` em `plano-de-estudos.csv`, seguindo o checklist e as regras de caminho desse arquivo.
-   * Se a ferramenta `WriteFile` não estiver disponível, mostre o CSV num bloco ```` ```csv ```` na seção 5 do template.
+4. Use `load_skill_resource` para ler `references/salvar_agenda.md` e salve o CSV com a ferramenta `create_object` no bucket informado com o nome `plano-de-estudos.csv`, seguindo o checklist e as regras desse arquivo.
+   * Se a ferramenta `create_object` não estiver disponível, mostre o CSV num bloco ```` ```csv ```` na seção 5 do template.
 5. Na resposta, preencha a seção 5 do template com o **caminho do arquivo salvo** e o número de sessões. Não repita o CSV inteiro na conversa quando o arquivo tiver sido salvo.
 
 ## Passo 6: Ajustes e Replanejamento
@@ -62,4 +62,4 @@ Depois de entregar o plano, a pessoa pode pedir mudanças. Siga estas regras:
 * **"Perdi sessões" / "atrasei"**: não empilhe o conteúdo atrasado em um único dia. Primeiro use os dias de margem; se não bastar, empurre o restante para frente e corte módulos `Opcional`. Nunca corte as revisões D+1.
 * **"Mudou minha disponibilidade"**: refaça a partir do Passo 1, mantendo o que já foi estudado.
 * **"Quero mais/menos detalhe"**: ajuste só a apresentação, sem refazer o planejamento.
-* Em qualquer ajuste, devolva a tabela de sessões atualizada **e** regrave o `plano-de-estudos.csv`, não só a explicação do que mudou. Siga a seção "Replanejamento" de `references/salvar_agenda.md`.
+* Em qualquer ajuste, devolva a tabela de sessões atualizada **e** regrave o `plano-de-estudos.csv` com `create_object`, não só a explicação do que mudou. Siga a seção "Replanejamento" de `references/salvar_agenda.md`.
