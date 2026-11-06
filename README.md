@@ -24,39 +24,40 @@ O agente está implantado e disponível publicamente no Cloud Run com interface 
 
 ```mermaid
 flowchart TD
-    User([Usuário / Web]) -->|Acesso HTTP / SSE| CR[Google Cloud Run\nInstâncias: 0 a 1 máx\nCPU: 1 | RAM: 512Mi | us-central1]
-    
-    subgraph "Camada de Aplicação (FastAPI + Google ADK)"
-        CR -->|Rate Limiting: 30 req/min por IP\nFiltro de Payload| Middleware[Middleware Anti-Abuso]
-        Middleware --> Runner[ADK Runner & Dispatcher]
-        Runner --> Sessions[(Sessões em Memória\nCusto: R$ 0,00)]
-        Runner --> RootAgent[Root Agent: agente_estudos]
+    User(["Usuário / Web"]) -->|"Acesso HTTP / SSE"| CR["Google Cloud Run<br/>Instâncias: 0 a 1 máx<br/>CPU: 1 · RAM: 512Mi · us-central1"]
+
+    subgraph App["Camada de Aplicação (FastAPI + Google ADK)"]
+        CR -->|"Rate Limiting: 30 req/min por IP<br/>Filtro de Payload"| Middleware["Middleware Anti-Abuso"]
+        Middleware --> Runner["ADK Runner & Dispatcher"]
+        Runner --> Sessions[("Sessões em Memória<br/>Custo: R$ 0,00")]
+        Runner --> RootAgent["Root Agent: agente_estudos"]
     end
 
-    subgraph "Engenharia de Prompt & Skills"
-        RootAgent --> SkillToolset[SkillToolset: plano-de-estudos]
-        SkillToolset --> L1[L1: Frontmatter & Descrição]
-        SkillToolset --> L2[L2: Regra de Gating]
-        SkillToolset --> L3[L3: Workflow, Técnicas & Templates]
+    subgraph Skills["Engenharia de Prompt & Skills"]
+        RootAgent --> SkillToolset["SkillToolset: plano-de-estudos"]
+        SkillToolset --> L1["L1: Frontmatter & Descrição"]
+        SkillToolset --> L2["L2: Regra de Gating"]
+        SkillToolset --> L3["L3: Workflow, Técnicas & Templates"]
     end
 
-    subgraph "Resiliência Cognitiva (FallbackGemini)"
-        RootAgent --> FallbackModel{FallbackGemini}
-        FallbackModel -->|Primário: Timeout 12s / Quota OK| M1[gemini-3.5-flash-lite]
-        FallbackModel -->|Fallback em HTTP 429/503| M2[gemini-3.1-flash-lite]
-        M1 & M2 -.-> AIStudio[Google AI Studio Free Tier\nR$ 0,00 / Sem risco de cobrança]
+    subgraph Resilience["Resiliência Cognitiva (FallbackGemini)"]
+        RootAgent --> FallbackModel{"FallbackGemini"}
+        FallbackModel -->|"Primário: Timeout 12s / Quota OK"| M1["gemini-3.5-flash-lite"]
+        FallbackModel -->|"Fallback em HTTP 429/503"| M2["gemini-3.1-flash-lite"]
+        M1 -.-> AIStudio["Google AI Studio Free Tier<br/>R$ 0,00 / Sem risco de cobrança"]
+        M2 -.-> AIStudio
     end
 
-    subgraph "Armazenamento & Persistência (GCS)"
-        RootAgent --> GCSToolset[GCSToolset: create_object & get_object_data]
-        GCSToolset --> Bucket[Bucket GCS: meu-agente-estudos]
-        Bucket --> Lifecycle[Lifecycle Rule: Exclusão após 7 dias\nGarante < 5GB Free Tier]
+    subgraph Storage["Armazenamento & Persistência (GCS)"]
+        RootAgent --> GCSToolset["GCSToolset: create_object & get_object_data"]
+        GCSToolset --> Bucket["Bucket GCS: meu-agente-estudos"]
+        Bucket --> Lifecycle["Lifecycle Rule: Exclusão após 7 dias<br/>Garante &lt; 5GB Free Tier"]
     end
 
-    subgraph "GCP Billing Sentinel & Kill Switch"
-        Budget[Cloud Billing Budget: R$ 0,01 / 100%] -->|Dispara Alerta| PS[Cloud Pub/Sub: billing-budget-alerts]
-        PS -->|Aciona| KillSwitch[Script Kill Switch]
-        KillSwitch -->|Desvincula Faturamento| BillingAPI[Desativa Faturamento do Projeto\nCorta custos de imediato]
+    subgraph Billing["GCP Billing Sentinel & Kill Switch"]
+        Budget["Cloud Billing Budget: R$ 0,01 / 100%"] -->|"Dispara Alerta"| PS["Cloud Pub/Sub: billing-budget-alerts"]
+        PS -->|"Aciona"| KillSwitch["Script Kill Switch"]
+        KillSwitch -->|"Desvincula Faturamento"| BillingAPI["Desativa Faturamento do Projeto<br/>Corta custos de imediato"]
     end
 ```
 
