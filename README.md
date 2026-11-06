@@ -1,4 +1,4 @@
-# 🧠 Imersão Dev Engenharia de Software na Era da IA: Agente de Estudos com Antigravity CLI + Google ADK
+# 🧠 Agente de Estudos com Antigravity CLI + Google ADK
 
 Neste lab você vai usar o **Antigravity CLI (`agy`)** para criar, com o **Google ADK**, um agente especialista em estudos. O agente usa a skill [`plano-de-estudos`](skills/plano-de-estudos/SKILL.md): você diz o que quer aprender e até quando, e ele monta um plano de estudos e salva um arquivo CSV para importar no Google Agenda, usando o [EnvironmentToolset](https://adk.dev/integrations/environment-toolset/) do ADK.
 
@@ -10,7 +10,7 @@ Neste lab você vai usar o **Antigravity CLI (`agy`)** para criar, com o **Googl
 
 ---
 
-# Aula 3: Introdução ao Antigravity CLI
+# 1. Introdução ao Antigravity CLI
 
 ## 1. Preparar o Cloud Shell
 
@@ -23,8 +23,8 @@ echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> ~/.bashrc
 # Habilita a Agent Platform (acesso aos modelos usados pelo agy)
 gcloud services enable aiplatform.googleapis.com cloudaicompanion.googleapis.com
 
-git clone https://github.com/johngarrido/alura-imersao-dev-agy.git ~/alura-imersao-dev
-cd ~/alura-imersao-dev
+git clone https://github.com/estevamvicttor/agente-estudos-agy.git ~/agente-estudos-agy
+cd ~/agente-estudos-agy
 ```
 
 > Se o Cloud Shell não abrir no projeto certo, rode `gcloud config set project SEU_PROJECT_ID` antes.
@@ -103,14 +103,14 @@ Saia com `/exit`.
 
 ---
 
-# Aula 4: Engenharia de software com IA e CLI
+# 2. Engenharia de software com IA e CLI
 
 ## 6. Configurar a API Key
 
 Configure o agente com a sua chave do AI Studio (ela não aparece na tela):
 
 ```bash
-cd ~/alura-imersao-dev/agente-estudos
+cd ~/agente-estudos-agy/agente-estudos
 read -s -p "Cole sua API Key: " KEY && echo
 
 cat << EOF > .env
@@ -146,8 +146,8 @@ Clique no link `http://127.0.0.1:8000` que aparece no terminal e escolha o agent
 No ADK Web, clique nos eventos `WriteFile` para ver os argumentos e a resposta da ferramenta. Depois confira o arquivo numa segunda aba do Cloud Shell:
 
 ```bash
-cat ~/alura-imersao-dev/agente-estudos/planos/plano-de-estudos.csv
-cloudshell download ~/alura-imersao-dev/agente-estudos/planos/plano-de-estudos.csv
+cat ~/agente-estudos-agy/agente-estudos/planos/plano-de-estudos.csv
+cloudshell download ~/agente-estudos-agy/agente-estudos/planos/plano-de-estudos.csv
 ```
 
 Com o arquivo no computador, importe no [Google Agenda](https://calendar.google.com/): **Configurações → Importar e exportar → Importar**.
@@ -157,7 +157,7 @@ Com o arquivo no computador, importe no [Google Agenda](https://calendar.google.
 Abra uma segunda aba no Cloud Shell (`+`) e rode:
 
 ```bash
-cd ~/alura-imersao-dev
+cd ~/agente-estudos-agy
 agy
 ```
 
@@ -205,8 +205,8 @@ Confira se não há API Key em nenhum arquivo versionado e faça commits com men
 3. Saia do `agy` (`/exit`) e envie para o seu repositório no GitHub:
 
 ```bash
-cd ~/alura-imersao-dev
-git remote set-url origin https://github.com/SEU_USUARIO/agente-estudos.git
+cd ~/agente-estudos-agy
+git remote set-url origin https://github.com/estevamvicttor/agente-estudos-agy.git
 git push -u origin main
 ```
 
